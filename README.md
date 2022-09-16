@@ -3,7 +3,7 @@
 
 ## Step 1 : Generate a secret yaml file with the following command
 
-      - kubectl create secret generic  wordpress-mysql-secret --from-literal=wordpress=YourPassword -n k8s-wordpress-project --dry-run=client -o yaml >wordpress_03_secret.yaml
+      kubectl create secret generic  wordpress-mysql-secret --from-literal=wordpress=YourPassword -n k8s-wordpress-project --dry-run=client -o yaml >wordpress_03_secret.yaml
 
 ## Step 2 : Replace the name of the storage class with your own for the following files :
 
