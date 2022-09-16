@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: wordpress
+  name: wordpress
+  namespace: k8s-wordpress-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - image: wordpress:6.0.2-php7.4-apache
+        name: wordpress-web
+        env: 
+              - name: WORDPRESS_DB_HOST
+                value: wordpress-mysql
+              - name: WORDPRESS_DB_USER
+                value: wordpress
+              - name: WORDPRESS_DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                     name: wordpress-mysql-secret
+                     key: wordpress
+              - name: WORDPRESS_DB_NAME
+                value: wordpress
+        volumeMounts:
+              - name: wordpress-persistent-storage
+                mountPath: /var/www/html
+        ports:
+        - containerPort: 3306
+        resources: {}
+      volumes:
+      - name: wordpress-persistent-storage
+        persistentVolumeClaim:
+          claimName: data-wordpress
+status: {}
