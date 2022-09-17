@@ -3,44 +3,44 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: wordpress
-  name: wordpress
+    app: wordpress-mysql
+  name: wordpress-mysql
   namespace: k8s-wordpress-project
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: wordpress
+      app: wordpress-mysql
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: wordpress
+        app: wordpress-mysql
     spec:
       containers:
-      - image: wordpress:6.0.2-php7.4-apache
-        name: wordpress-web
+      - image: mysql:5.7
+        name: mysql
         env: 
-              - name: WORDPRESS_DB_HOST
-                value: wordpress-mysql
-              - name: WORDPRESS_DB_USER
+              - name: MYSQL_RANDOM_ROOT_PASSWORD
+                value: '1'
+              - name: MYSQL_USER
                 value: wordpress
-              - name: WORDPRESS_DB_PASSWORD
+              - name: MYSQL_PASSWORD
                 valueFrom:
                   secretKeyRef:
                      name: wordpress-mysql-secret
                      key: wordpress
-              - name: WORDPRESS_DB_NAME
+              - name: MYSQL_DATABASE
                 value: wordpress
         volumeMounts:
-              - name: wordpress-persistent-storage
-                mountPath: /var/www/html
+              - name: mysql-persistent-storage
+                mountPath: /var/lib/mysql
         ports:
         - containerPort: 3306
         resources: {}
       volumes:
-      - name: wordpress-persistent-storage
+      - name: mysql-persistent-storage
         hostPath:
-              path: /data/wordpress
+              path: /data/mysql
 status: {}
