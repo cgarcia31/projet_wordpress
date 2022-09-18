@@ -18,9 +18,6 @@
       Open your browser and go to http://YourMasterKubernetesServerIP:30005
 
 ## Delete all
-All objects, except the pv, are created in the k8s-wordpress-project namespace.
-
-      kubectl delete ns k8s-wordpress-project
-      kubectl delete pv data-pv
+kubectl delete -f .
 
 You can delete the data, rm -Rf /data -> To be done on the master and the workers.
